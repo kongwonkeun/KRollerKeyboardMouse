@@ -57,6 +57,7 @@ class BtRxThread(threading.Thread):
                 #print(rd, end='', flush=True)
                 for i in range(len(rd)):
                     self.state_machine(rd[i])
+
         self.sock.close()
         return
 

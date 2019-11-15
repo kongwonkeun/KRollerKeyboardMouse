@@ -9,6 +9,8 @@ import ctypes
 import msvcrt
 import threading
 
+import zKey
+
 PIPE_FOO = r"\\.\pipe\foo"
 PIPE_BAR = r"\\.\pipe\bar"
 PIPE_BAZ = r"\\.\pipe\baz"
@@ -175,7 +177,12 @@ def foo_client():
             
             while True:
                 d = win32file.ReadFile(h, PIPE_BUF_SIZE) #---- blocking ----
+                #---- test ----
                 print(f"foo-c: read {d}")
+                #s = d[1].decode()
+                #for k in s:
+                #    zKey.type(k)
+                #----
 
                 if  check_quit():
                     quit = True
@@ -328,7 +335,7 @@ def check_quit():
 
     if  msvcrt.kbhit():
         c = msvcrt.getch()
-        print(f"you typed {c.decode()}")
+        #print(f"you typed {c.decode()}")
         if  c == b'q':
             return True
 

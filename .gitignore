@@ -123,3 +123,30 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vs/KRollerKeyboardMouse/DesignTimeBuild/.dtbcache
+.vs/KRollerKeyboardMouse/v16/.suo
+.vs/KRollerKeyboardMouse/v16/Browse.VC.db
+.vs/KRollerKeyboardMouse/v16/ipch/AutoPCH/176e6c1b4890bd63/MAIN.ipch
+.vs/KRollerKeyboardMouse/v16/ipch/AutoPCH/3377458eaa3fed08/MAIN.ipch
+.vs/KRollerKeyboardMouse/v16/ipch/AutoPCH/dd929294da4f2458/MAIN.ipch
+.vs/KRollerKeyboardMouse/v16/Server/sqlite3/db.lock
+.vs/KRollerKeyboardMouse/v16/Server/sqlite3/storage.ide
+.vs/KRollerKeyboardMouse/v16/Solution.VC.db
+Debug/KRollerClientCpp.exe
+Debug/KRollerClientCpp.ilk
+Debug/KRollerClientCpp.pdb
+x64/Release/KRollerClientCpp.exe
+x64/Release/KRollerClientCpp.iobj
+x64/Release/KRollerClientCpp.ipdb
+x64/Release/KRollerClientCpp.pdb
+x64/Release/KRollerClientCpp.tlog/CL.command.1.tlog
+x64/Release/KRollerClientCpp.tlog/CL.read.1.tlog
+x64/Release/KRollerClientCpp.tlog/CL.write.1.tlog
+x64/Release/KRollerClientCpp.tlog/KRollerClientCpp.lastbuildstate
+x64/Release/KRollerClientCpp.tlog/KRollerClientCpp.write.1u.tlog
+x64/Release/KRollerClientCpp.tlog/link.command.1.tlog
+x64/Release/KRollerClientCpp.tlog/link.delete.1.tlog
+x64/Release/KRollerClientCpp.tlog/link.read.1.tlog
+x64/Release/KRollerClientCpp.tlog/link.write.1.tlog
+x64/Release/main.obj
+x64/Release/vc142.pdb
