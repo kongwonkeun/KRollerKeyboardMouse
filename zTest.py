@@ -42,7 +42,6 @@ def typeKey():
         time.sleep(1)
         if  msvcrt.kbhit():
             c = msvcrt.getch()
-            print(f"{c.decode()}")
             if  c == b'q':
                 f = False
     return

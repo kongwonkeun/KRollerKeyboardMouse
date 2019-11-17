@@ -30,7 +30,7 @@ if  __name__ == '__main__':
     #sys.exit()
 
     if  len(sys.argv) < 2:
-        print("need argument: 's' or 'c'")
+        print("usage: kroller s or fb or f or b")
 
     elif sys.argv[1] == 's':
         G_bt.connect()
@@ -42,12 +42,17 @@ if  __name__ == '__main__':
         zPipe.launcher()
         G_bt.stop()
 
-    elif sys.argv[1] == 'c':
+    elif sys.argv[1] == 'fb':
+        zPipe.foobar_client()
+
+    elif sys.argv[1] == 'f':
         zPipe.foo_client()
-        #zPipe.bar_client()
+
+    elif sys.argv[1] == 'b':
+        zPipe.bar_client()
 
     else:
-        print("usage: 'main c' or 'main s'")
+        print("usage: kroller s or fb or f or b")
 
     sys.exit()
 

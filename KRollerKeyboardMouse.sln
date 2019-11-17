@@ -7,7 +7,9 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "KRollerKeyboardMouse", "KRo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KRollerClientCpp", "..\KRollerClientCpp\KRollerClientCpp.vcxproj", "{E104B05C-C24B-44C1-A1DF-FDC8A7D8DA98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KRollerClientCs", "..\KRollerClientCs\KRollerClientCs.csproj", "{99AC6FA6-41BD-41A4-B2A1-294BD1BCEA3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KRollerClientCs", "..\KRollerClientCs\KRollerClientCs.csproj", "{99AC6FA6-41BD-41A4-B2A1-294BD1BCEA3A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KRollerProxy", "..\KRollerProxy\KRollerProxy.vcxproj", "{28195350-FCB4-4C15-B809-E8E0F0654C20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,16 @@ Global
 		{99AC6FA6-41BD-41A4-B2A1-294BD1BCEA3A}.Release|x64.Build.0 = Release|Any CPU
 		{99AC6FA6-41BD-41A4-B2A1-294BD1BCEA3A}.Release|x86.ActiveCfg = Release|Any CPU
 		{99AC6FA6-41BD-41A4-B2A1-294BD1BCEA3A}.Release|x86.Build.0 = Release|Any CPU
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Debug|x64.ActiveCfg = Debug|x64
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Debug|x64.Build.0 = Debug|x64
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Debug|x86.ActiveCfg = Debug|Win32
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Debug|x86.Build.0 = Debug|Win32
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Release|Any CPU.ActiveCfg = Release|Win32
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Release|x64.ActiveCfg = Release|x64
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Release|x64.Build.0 = Release|x64
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Release|x86.ActiveCfg = Release|Win32
+		{28195350-FCB4-4C15-B809-E8E0F0654C20}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

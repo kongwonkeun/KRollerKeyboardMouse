@@ -150,3 +150,8 @@ x64/Release/KRollerClientCpp.tlog/link.read.1.tlog
 x64/Release/KRollerClientCpp.tlog/link.write.1.tlog
 x64/Release/main.obj
 x64/Release/vc142.pdb
+*.exe
+*.iobj
+*.ipdb
+*.pdb
+*.ipch

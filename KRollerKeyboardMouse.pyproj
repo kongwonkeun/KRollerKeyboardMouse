@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>e982cd75-01aa-4512-a833-61c479f527ea</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>main.py</StartupFile>
+    <StartupFile>kRoller.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -37,7 +37,7 @@
     <Compile Include="zKey.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="main.py" />
+    <Compile Include="kRoller.py" />
     <Compile Include="zMouse.py">
       <SubType>Code</SubType>
     </Compile>
