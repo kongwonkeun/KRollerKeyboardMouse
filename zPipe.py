@@ -39,7 +39,6 @@ G_bar_server_running = False
 
 G_foobar_pipe = None
 G_foo_pipe = None
-G_bar_pipe = None
 
 #================================
 #
@@ -47,7 +46,6 @@ G_bar_pipe = None
 def launcher():
 
     print("pipe launcher begin")
-
     kill = False
     task = []
 
@@ -59,9 +57,11 @@ def launcher():
     task.append(fool)
     fool.start()
 
-    barl = threading.Thread(target=bar_server_launcher, args=(lambda: kill,))
-    task.append(barl)
-    barl.start()
+    #---- kong ---- for future usage
+    #barl = threading.Thread(target=bar_server_launcher, args=(lambda: kill,))
+    #task.append(barl)
+    #barl.start()
+    #----
 
     while True:
         if  check_quit():
@@ -69,6 +69,8 @@ def launcher():
             for t in task:
                 t.join()
             break;
+
+        time.sleep(1)
 
     print("pipe launcher end")
     return
@@ -78,9 +80,9 @@ def launcher():
 #
 def foobar_server_launcher(kill_me):
 
-    print("pipe-foobar launcher begin")
-
     global G_foobar_server_running
+
+    print("pipe-foobar launcher begin")
     kill = False
     task = []
 
@@ -114,6 +116,8 @@ def foobar_server_launcher(kill_me):
                 t.join()
             break
 
+        time.sleep(1)
+
     print("pipe-foobar launcher end")
     return
 
@@ -122,28 +126,33 @@ def foobar_server_launcher(kill_me):
 #
 def foobar_server(pipe, kill_me):
 
-    print("foobar: server begin")
-
     global G_foobar_server_running
     global G_foobar_pipe
+
+    print("foobar: server begin")
     G_foobar_pipe = pipe
     count = 0
 
     try:
         while True:
             #---- task ----
-            print(f"foobar: write {count}")
-            d = str.encode(f"{count}")   # encode to byte stream
-            win32file.WriteFile(pipe, d) # write
+            #print(f"foobar: write {count}")
+            #d = str.encode(f"{count}")   # encode to byte stream
+            #win32file.WriteFile(pipe, d) # write
+            win32file.WriteFile(pipe, b"T") # write
             time.sleep(1)
             #----
 
             count += 1
 
+            if  G_foobar_pipe == None:
+                G_foobar_server_running = False
+                break;
+
             if  kill_me():
                 break
 
-    except pywintypes.error as e:
+    except  pywintypes.error as e:
         if  e.args[0] == 232:
             print("foobar: pipe is being closed")
             G_foobar_server_running = False
@@ -189,17 +198,12 @@ def foobar_client():
                 d = win32file.ReadFile(h, PIPE_BUF_SIZE) #---- blocking ---- read byte stream
                 print(f"foobar: read {d[1].decode()}") # decide to string
                 #----
-                #---- test ----
-                #s = d[1].decode()
-                #for k in s:
-                #    zKey.type(k)
-                #----
 
                 if  check_quit():
                     quit = True
                     break;
 
-        except pywintypes.error as e:
+        except  pywintypes.error as e:
             if  e.args[0] == 2:
                 print("foobar: there is no pipe (try again in a sec)")
                 time.sleep(1)
@@ -215,9 +219,9 @@ def foobar_client():
 #
 def foo_server_launcher(kill_me):
 
-    print("pipe-foo launcher begin")
-
     global G_foo_server_running
+
+    print("pipe-foo launcher begin")
     kill = False
     task = []
 
@@ -251,6 +255,8 @@ def foo_server_launcher(kill_me):
                 t.join()
             break
 
+        time.sleep(1)
+
     print("pipe-foo launcher end")
     return
 
@@ -259,28 +265,33 @@ def foo_server_launcher(kill_me):
 #
 def foo_server(pipe, kill_me):
 
-    print("foo: server begin")
-
     global G_foo_server_running
     global G_foo_pipe
+
+    print("foo: server begin")
     G_foo_pipe = pipe
     count = 0
 
     try:
         while True:
             #---- task ----
-            print(f"foo: write {count}")
-            d = str.encode(f"{count}")   # encode to byte stream
-            win32file.WriteFile(pipe, d) # write
+            #print(f"foo: write {count}")
+            #d = str.encode(f"{count}")   # encode to byte stream
+            #win32file.WriteFile(pipe, d) # write
+            win32file.WriteFile(pipe, b"T") # write
             time.sleep(1)
             #----
 
             count += 1
 
+            if  G_foo_pipe == None:
+                G_foo_server_running = False
+                break;
+
             if  kill_me():
                 break
 
-    except pywintypes.error as e:
+    except  pywintypes.error as e:
         if  e.args[0] == 232:
             print("foo: pipe is being closed")
             G_foo_server_running = False
@@ -326,17 +337,12 @@ def foo_client():
                 d = win32file.ReadFile(h, PIPE_BUF_SIZE) #---- blocking ---- read byte stream
                 print(f"foo: read {d[1].decode()}") # decide to string
                 #----
-                #---- test ----
-                #s = d[1].decode()
-                #for k in s:
-                #    zKey.type(k)
-                #----
 
                 if  check_quit():
                     quit = True
                     break;
 
-        except pywintypes.error as e:
+        except  pywintypes.error as e:
             if  e.args[0] == 2:
                 print("foo: there is no pipe (try again in a sec)")
                 time.sleep(1)
@@ -352,9 +358,9 @@ def foo_client():
 #
 def bar_server_launcher(kill_me):
 
-    print("pipe-bar launcher begin")
-
     global G_bar_server_running
+
+    print("pipe-bar launcher begin")
     kill = False
     task = []
 
@@ -388,6 +394,8 @@ def bar_server_launcher(kill_me):
                 t.join()
             break
 
+        time.sleep(1)
+
     print("pipe-bar launcher end")
     return
 
@@ -396,9 +404,9 @@ def bar_server_launcher(kill_me):
 #
 def bar_server(pipe, kill_me):
 
-    print("bar: server begin")
-
     global G_bar_server_running
+
+    print("bar: server begin")
     
     try:
         while True:
@@ -410,8 +418,8 @@ def bar_server(pipe, kill_me):
             if  kill_me():
                 break
 
-    except pywintypes.error as e:
-        if e.args[0] == 109:
+    except  pywintypes.error as e:
+        if  e.args[0] == 109:
             print("bar: broken pipe")
             G_bar_server_running = False
 
@@ -465,7 +473,7 @@ def bar_client():
                     quit = True
                     break;
 
-        except pywintypes.error as e:
+        except  pywintypes.error as e:
             if  e.args[0] == 2:
                 print("bar: there is no pipe (try again in a sec)")
                 time.sleep(1)

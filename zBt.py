@@ -4,7 +4,7 @@
 
 import sys
 import bluetooth
-import win32file
+import win32file, pywintypes
 import msvcrt
 import threading
 
@@ -50,17 +50,26 @@ class BtRxThread(threading.Thread):
         while (self.f):
             rx = self.sock.recv(1024)   # rx is byte stream
 
-            if  zPipe.G_foobar_server_running:
-                win32file.WriteFile(zPipe.G_foobar_pipe, rx)
+            try:
+                if  zPipe.G_foobar_pipe != None:
+                    win32file.WriteFile(zPipe.G_foobar_pipe, rx)
+            except  pywintypes.error as e:
+                if  e.args[0] == 232:
+                    zPipe.G_foobar_pipe = None
 
-            if  zPipe.G_foo_server_running:
-                win32file.WriteFile(zPipe.G_foo_pipe, rx)
+            try:
+                if  zPipe.G_foo_pipe != None:
+                    win32file.WriteFile(zPipe.G_foo_pipe, rx)
+            except  pywintypes.error as e:
+                if  e.args[0] == 232:
+                    zPipe.G_foo_pipe = None
 
-            if  rx:
-                rd = rx.decode()        # rd is str
-                #print(rd, end='', flush=True)
-                for i in range(len(rd)):
-                    self.state_machine(rd[i])
+            #---- kong ---- for future usage
+            #if  rx:
+            #    rd = rx.decode()        # rd is str
+            #    for i in range(len(rd)):
+            #        self.state_machine(rd[i])
+            #----
 
         self.sock.close()
         return
@@ -89,11 +98,6 @@ class BtRxThread(threading.Thread):
             self.dir = self.d
             #print(f"D:{self.dir}")
 
-            #---- test ----
-            #x = self.dir - 19
-            #y = self.speed / 30
-            #zMouse.move(x, y)
-            #----
         return
 
 #================================
