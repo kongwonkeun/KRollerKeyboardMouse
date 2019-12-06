@@ -14,6 +14,7 @@ import zKey
 PIPE_FOOBAR = r"\\.\pipe\foobar"
 PIPE_FOO = r"\\.\pipe\foo"
 PIPE_BAR = r"\\.\pipe\bar"
+PIPE_RDT = r"\\.\pipe\RDTLauncherPipe"
 
 PIPE_OPEN_MODE = win32pipe.PIPE_ACCESS_DUPLEX
 PIPE_MODE = win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_READMODE_MESSAGE | win32pipe.PIPE_WAIT
@@ -36,6 +37,7 @@ FILE_TEMPLATE = None
 G_foobar_server_running = False
 G_foo_server_running = False
 G_bar_server_running = False
+G_rdt_server_running = False
 
 G_foobar_pipe = None
 G_foo_pipe = None
@@ -43,7 +45,7 @@ G_foo_pipe = None
 #================================
 #
 #
-def launcher():
+def launcher(type):
 
     print("pipe launcher begin")
     kill = False
@@ -57,11 +59,15 @@ def launcher():
     task.append(fool)
     fool.start()
 
-    #---- kong ---- for future usage
-    #barl = threading.Thread(target=bar_server_launcher, args=(lambda: kill,))
-    #task.append(barl)
-    #barl.start()
-    #----
+    if  type == 'sb':
+        barl = threading.Thread(target=bar_server_launcher, args=(lambda: kill,))
+        task.append(barl)
+        barl.start()
+
+    if  type == 'sr':
+        rdtl = threading.Thread(target=rdt_server_launcher, args=(lambda: kill,))
+        task.append(rdtl)
+        rdtl.start()
 
     while True:
         if  check_quit():
@@ -486,6 +492,141 @@ def bar_client():
             break;
 
     print("bar: client end")
+    return
+
+#================================
+#
+#
+def rdt_server_launcher(kill_me):
+
+    global G_rdt_server_running
+
+    print("pipe-rdt launcher begin")
+    kill = False
+    task = []
+
+    while True:
+
+        if  not G_rdt_server_running:
+
+            p = win32pipe.CreateNamedPipe(
+                PIPE_RDT,           # pipe name
+                PIPE_OPEN_MODE,     # pipe open mode
+                PIPE_MODE,          # pipe mode
+                PIPE_MAX_INSTANCE,  # max instance
+                PIPE_BUF_SIZE,      # out buffer size
+                PIPE_BUF_SIZE,      # in  buffer size
+                PIPE_TIMEOUT,       # timeout
+                PIPE_SECURITY       # secuity attributes
+            )
+            print("rdt: waiting for client")
+            win32pipe.ConnectNamedPipe(p, None) #---- blocking ----
+            print("rdt: got client")
+
+            x = threading.Thread(target=rdt_server, args=(p, lambda: kill))
+            task.append(x)
+            x.start()
+
+            G_rdt_server_running = True
+
+        if  kill_me():
+            kill = True
+            for t in task:
+                t.join()
+            break
+
+        time.sleep(1)
+
+    print("pipe-rdt launcher end")
+    return
+
+#================================
+#
+#
+def rdt_server(pipe, kill_me):
+
+    global G_rdt_server_running
+
+    print("rdt: server begin")
+    
+    try:
+        while True:
+            #---- task ----
+            d = win32file.ReadFile(pipe, PIPE_BUF_SIZE) #---- blocking ---- receive byte stream
+            print(f"rdt: receive {d[1].decode()}") # decode to string
+            #----
+
+            if  kill_me():
+                break
+
+    except  pywintypes.error as e:
+        if  e.args[0] == 109:
+            print("rdt: broken pipe")
+            G_rdt_server_running = False
+
+    print("rdt: server end")
+    return
+
+#================================
+#
+#
+def rdt_client():
+
+    print("rdt: client begin")
+
+    count = 0
+    quit  = False
+
+    while not quit:
+        try:
+            h = win32file.CreateFile(
+                PIPE_RDT,           # pipe file name
+                FILE_ACCESS,        # desired access mode
+                FILE_SHARE_MODE,    # share mode
+                FILE_SECURITY,      # security attributes
+                FILE_CREATION,      # creation disposition
+                FILE_FLAGS,         # flag and attributes
+                FILE_TEMPLATE       # template file
+            )
+
+            r = win32pipe.SetNamedPipeHandleState(
+                h, # pipe handle
+                PIPE_SET_MODE,                  # mode
+                PIPE_SET_COLLECTION_MAX_COUNT,  # max collection count
+                PIPE_SET_COLLECTION_TIMEOUT     # collection data timeout
+            )
+
+            if  r == 0:
+                e = win32api.GetLastError()
+                print(f"rdt: SetNamedPipeHandleState return code = {e}")
+            
+            while True:
+                #---- task ----
+                print(f"rdt: send {count}")
+                d = str.encode(f"{count}") # encode to byte stream
+                win32file.WriteFile(h, d)  # send
+                time.sleep(1)
+                #----
+
+                count += 1
+
+                if  check_quit():
+                    quit = True
+                    break;
+
+        except  pywintypes.error as e:
+            if  e.args[0] == 2:
+                print("rdt: there is no pipe (try again in a sec)")
+                time.sleep(1)
+            elif e.args[0] == 109:
+                print("rdt: broken pipe")
+                quit = True
+
+        if  check_quit():
+            quit = True
+            break;
+
+    print("rdt: client end")
     return
 
 #================================

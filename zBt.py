@@ -16,6 +16,7 @@ UUID_RFCOMM = "00000003-0000-1000-8000-00805F9B34FB"
 UUID_SPP = "00001101-0000-1000-8000-00805F9B34FB"
 
 BT_NAME = "HC-05"
+BT_ERROR = 1
 
 G_connected = False
 G_found = False
@@ -145,7 +146,7 @@ class Bt(object):
         n = 1
         for addr, name in devices:
             if  name == BT_NAME:
-                break;
+                break
             n += 1
             if  n > len(devices):
                 G_found = False

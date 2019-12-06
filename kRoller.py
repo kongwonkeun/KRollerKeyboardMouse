@@ -18,9 +18,33 @@ G_bt = zBt.Bt()
 #================================
 #
 #
-if  __name__ == '__main__':
+def help():
 
-    print("hello world")
+    print("usage:")
+    print("> kroller s  --> kroller server for the pipes (foobar, foo)")
+    print("> kroller sb --> krokker server for the pipes (foobar, foo, bar)")
+    print("> krokker sr --> kroller server for the pipes (foobar, foo, RDTLauncherPipe)")
+    print("> kroller fb --> kroller client for foobar (rx) pipe")
+    print("> kroller f  --> kroller client for foo (rx) pipe")
+    print("> kroller b  --> kroller client for bar (tx) pipe")
+    print("> kroller r  --> kroller client for RDTLauncherPipe (tx) pipe")
+    return
+
+#================================
+#
+#
+def connect():
+
+    G_bt.connect()
+    if  not zBt.G_connected:
+        print("kroller not found or connection failed")
+        sys.exit(zBt.BT_ERROR)
+    return
+
+#================================
+#
+#
+def test():
 
     #zMouse.monitor()
     #zKey.monitor()
@@ -28,19 +52,30 @@ if  __name__ == '__main__':
     #zTest.typeKey()
     #zTest.moveMouse()
     #sys.exit()
+    return
+
+#================================
+#
+#
+if  __name__ == '__main__':
+
+    print("hello world")
+    #test()
 
     if  len(sys.argv) < 2:
-        print("usage: kroller s or fb or f or b")
+        help()
 
     elif sys.argv[1] == 's':
-        G_bt.connect()
+        connect()
+        zPipe.launcher('s')
 
-        if  not zBt.G_connected:
-            print("kroller not found or connection failed")
-            sys.exit()
+    elif sys.argv[1] == 'sb':
+        connect()
+        zPipe.launcher('sb')
 
-        zPipe.launcher()
-        G_bt.stop()
+    elif sys.argv[1] == 'sr':
+        connect()
+        zPipe.launcher('sr')
 
     elif sys.argv[1] == 'fb':
         zPipe.foobar_client()
@@ -51,8 +86,14 @@ if  __name__ == '__main__':
     elif sys.argv[1] == 'b':
         zPipe.bar_client()
 
+    elif sys.argv[1] == 'r':
+        zPipe.rdt_client()
+
     else:
-        print("usage: kroller s or fb or f or b")
+        help()
+
+    if  zBt.G_connected:
+        G_bt.stop()
 
     sys.exit()
 
